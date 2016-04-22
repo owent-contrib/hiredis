@@ -328,12 +328,12 @@ static void test_reply_reader(void) {
 }
 
 static void test_free_null(void) {
-    void *redisContext = NULL;
+    void *redisCtx = NULL;
     void *reply = NULL;
 
     test("Don't fail when redisFree is passed a NULL value: ");
-    redisFree(redisContext);
-    test_cond(redisContext == NULL);
+    redisFree(redisCtx);
+    test_cond(redisCtx == NULL);
 
     test("Don't fail when freeReplyObject is passed a NULL value: ");
     freeReplyObject(reply);
@@ -552,7 +552,7 @@ static void test_invalid_timeout_errors(struct config config) {
 
     c = redisConnectWithTimeout(config.tcp.host, config.tcp.port, config.tcp.timeout);
 
-    test_cond(c->err == REDIS_ERR_IO);
+    test_cond(c->err == REDIS_ERR_IO && strcmp(c->errstr, "Invalid timeout specified") == 0);
     redisFree(c);
 
     test("Set error when an invalid timeout sec value is given to redisConnectWithTimeout: ");
@@ -562,7 +562,7 @@ static void test_invalid_timeout_errors(struct config config) {
 
     c = redisConnectWithTimeout(config.tcp.host, config.tcp.port, config.tcp.timeout);
 
-    test_cond(c->err == REDIS_ERR_IO);
+    test_cond(c->err == REDIS_ERR_IO && strcmp(c->errstr, "Invalid timeout specified") == 0);
     redisFree(c);
 }
 
