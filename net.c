@@ -156,10 +156,11 @@ int redisKeepAlive(redisContext *c, int interval) {
     }
 
     val = 3;
-    if (setsockopt(fd, IPPROTO_TCP, TCP_KEEPCNT, &val, sizeof(val)) < 0) {
-        __redisSetError(c,REDIS_ERR_OTHER,strerror(errno));
-        return REDIS_ERR;
-    }
+    setsockopt(fd, IPPROTO_TCP, TCP_KEEPCNT, &val, sizeof(val));
+    //if (setsockopt(fd, IPPROTO_TCP, TCP_KEEPCNT, &val, sizeof(val)) < 0) {
+    //    __redisSetError(c,REDIS_ERR_OTHER,strerror(errno));
+    //    return REDIS_ERR;
+    //}
 #endif
 #endif
 
